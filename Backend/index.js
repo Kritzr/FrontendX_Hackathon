@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {getImage} = require('../Unsplash/imageGet');
-
+const {getImageLabels} = require('../OpenApi/getImageLabels');
 const app=express();
 PORT=process.env.PORT || 3000;
 app.use(express.json());
@@ -16,7 +16,14 @@ router.get('/getImage',async (req,res)=>{
     else{
       const response=await getImage(query);
       if(response && response.length > 0) {
-        return res.json({imageUrl: response});
+
+        const imageUrl=response? response:null;
+        const labels=await getImageLabels(imageUrl);
+        return res.status(200).json({
+          image: imageUrl,
+          labels: labels
+        });
+        
       } else {
         return res.status(404).json({error: 'No images found'});
       }
@@ -37,4 +44,4 @@ app.use('/VisionSnap/api',router);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-module.exports = app; 
+module.exports = app; 0

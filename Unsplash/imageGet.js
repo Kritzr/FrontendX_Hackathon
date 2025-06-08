@@ -1,11 +1,11 @@
 const {createApi} = require('unsplash-js');
-const fech = require('node-fetch');
+const fetch = require('node-fetch');
 const path = require('path');
 require('dotenv').config({path:path.resolve(__dirname, '../.env')});
 
 const unsplash = createApi({
   accessKey: process.env.UNSPLASH_ACCESS_KEY,
-  fetch: fech,
+  fetch: fetch,
 });
 
 
